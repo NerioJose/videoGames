@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   sequelize.define(
-    'Videogame',  // Cambiar a 'Videogame' para que coincida
+    'Videogame',  
     {
       id: {
         type: DataTypes.UUID,
