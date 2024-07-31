@@ -1,0 +1,195 @@
+.createGameContainer {
+  width: 100%;
+  height: 950px;
+  background-image: url('../../media/background.jpg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.createGameContainer textarea {
+  resize: none;
+  height: 80px;
+}
+
+.containForm {
+  width: 400px;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: -50px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.imgFondo {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../media/gameboy.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: #fff;
+  top: 0px;
+}
+
+.title {
+  position: absolute;
+  color: #fff;
+  font-size: 35px;
+  font-weight: bold;
+  top: 200px;
+  z-index: 20;
+  -webkit-text-stroke: 3px black;
+}
+
+.bottonCreate {
+  position: absolute;
+  font-weight: bold;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border: none;
+  box-shadow: 0px 10px 15px #000;
+  left: -245px;
+  top: 350px;
+}
+
+.bottonCreate:hover {
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  cursor: pointer;
+}
+
+.selectedOptions {
+  width: 400px;
+  height: auto;
+  background-color: #000;
+  color: #fff;
+  position: absolute;
+  display: none;
+  left: 100px;
+  top: 360px;
+}
+
+.selectedOptions.visible {
+  display: block;
+  display: flex;
+  justify-content: space-around;
+  align-items: left;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  box-shadow: 0px 7px 15px #078ffd;
+  font-size: 12px;
+}
+
+.errorName,
+.errorDescription,
+.errorImage,
+.errorPlatforms,
+.errorGenres,
+.errorReleased,
+.errorRating {
+  color: red;
+  position: absolute;
+}
+
+.errorName {
+  width: 100%;
+  top: 30px;
+  left: 400px;
+}
+
+.errorDescription {
+  width: 100%;
+  top: 90px;
+  left: 400px;
+}
+
+.errorPlatforms {
+  width: 100%;
+  top: 208px;
+  left: 400px;
+}
+
+.errorGenres {
+  width: 100%;
+  top: 270px;
+  left: 400px;
+}
+
+.errorReleased {
+  width: 100%;
+  top: 328px;
+  left: 400px;
+}
+
+.errorRating {
+  width: 100%;
+  top: 370px;
+  left: 400px;
+}
+
+.errorImage {
+  width: 100%;
+  top: 150px;
+  left: 400px;
+}
+
+.successMessage {
+  background-color: #34f12e;
+  color: white;
+  position: absolute;
+  width: 50%;
+  height: 40px;
+  top: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  z-index: 9999;
+  text-align: center;
+  font-family: 'silk-screen';
+  animation: messageUp 6s;
+  -webkit-animation: messageUp 6s;
+}
+
+@keyframes messageUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-250px);
+    scale: 1.4;
+    -webkit-transform: translateY(-250px);
+    -moz-transform: translateY(-250px);
+    -ms-transform: translateY(-250px);
+    -o-transform: translateY(-250px);
+    opacity: 0.5;
+    z-index: -9999;
+  }
+}
