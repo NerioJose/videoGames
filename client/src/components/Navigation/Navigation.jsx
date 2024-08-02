@@ -48,7 +48,7 @@ const Navigation = () => {
 
   return (
     <div className={style.container}>
-      <Link to={'/videogames'} className={style.btnHome}>
+      <Link to={'/home'} className={style.btnHome}>
         <button className={style.buttonHome} onClick={handleHome}>
           Home
         </button>
@@ -57,7 +57,7 @@ const Navigation = () => {
         <button className={style.buttonCreate}>Create New Game</button>
       </Link>
       <SearchBar />
-      {location.pathname === '/videogames' && (
+      {location.pathname === '/home' && (
         <>
           <div className={style.filterOptions}>
             <h3>Filter by Genre:</h3>

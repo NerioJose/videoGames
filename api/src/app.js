@@ -26,6 +26,11 @@ server.use((req, res, next) => {
   next();
 });
 
+// Agregar ruta para la raíz
+server.get('/', (req, res) => {
+  res.send('Bienvenido a la API de Videojuegos');
+});
+
 server.use('/', routes);
 
 // Error catching endware.
@@ -38,3 +43,14 @@ server.use((err, req, res, next) => {
 });
 
 module.exports = server;
+
+const server = require('./src/app.js');
+const { conn } = require('./src/db.js');
+const PORT = process.env.PORT || 3001; // Cambiado de { PORT } a PORT
+
+// Syncing all the models at once.
+conn.sync({ force: true }).then(() => {
+  server.listen(PORT, () => {
+    console.log(`listening at Port ${PORT}`); // eslint-disable-line no-console
+  });
+});
