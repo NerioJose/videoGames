@@ -28,7 +28,7 @@ const getVideoGameDetail = async (req, res) => {
       }
     } else {
       const apiResponse = await axios.get(
-        `https://api.rawg.io/api/games/${id}?key=${API_KEY}`
+        `/games/${id}?key=${API_KEY}`
       );
 
       const apiData = apiResponse.data;

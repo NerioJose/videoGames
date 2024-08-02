@@ -7,7 +7,7 @@ const getAllGenres = async (req, res) => {
   try {
     // obtenemos todos los generos de la api
     const response = await axios.get(
-      `https://api.rawg.io/api/genres?key=${API_KEY}`
+      `/genres?key=${API_KEY}`
     );
     const apiGenres = response.data.results.map((g) => {
       return {

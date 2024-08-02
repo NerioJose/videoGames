@@ -6,7 +6,7 @@ const { Videogame, Genres } = require('../db'); // Importa el modelo de tu base 
 
 // Función para obtener los primeros 100 videojuegos de la API
 const getFirst100VideoGamesFromAPI = async () => {
-  const URL = `https://api.rawg.io/api/games?key=${API_KEY}`;
+  const URL = `/games?key=${API_KEY}`;
   let allVideoGames = [];
   let page = 1;
   const totalPages = 5; // Para obtener 100 juegos, necesitamos 5 páginas (15 juegos por página)

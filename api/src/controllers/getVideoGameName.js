@@ -14,7 +14,7 @@ const getVideoGameName = async (req, res) => {
 
     // Obtener los primeros 100 juegos de la base de datos y la API
     const dbResults = await Videogame.findAll({ limit: 100 });
-    const response = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=100`);
+    const response = await axios.get(`/games?key=${API_KEY}&page_size=100`);
     const apiResults = response.data.results;
 
     // Combinar los resultados de la base de datos y la API
