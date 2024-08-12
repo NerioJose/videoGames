@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  height: 840px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px; /* Espacio entre los elementos, ajusta según tus necesidades */
+  overflow: auto; /* Permite el desplazamiento y solo mostrará las barras cuando sea necesario */
+  position: relative;
+  box-sizing: border-box;
+  padding: 40px;
+  top: 9px;
+  background-image: url('../../media/background.jpg');
+  background-position: center;
+  background-repeat: repeat;
+}
+
+/* Ocultar las barras de desplazamiento nativas */
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.loadingContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+}
+
+.imgLoading {
+  width: 100%;
+}
