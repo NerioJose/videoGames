@@ -3,6 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const path = require('path'); // Importa el módulo 'path'
 const routes = require('./routes/index.js');
 
 require('./db.js');
@@ -27,6 +28,14 @@ server.use((req, res, next) => {
 });
 
 server.use('/', routes);
+
+// Serve static files from the 'build' directory
+server.use(express.static(path.join(__dirname, 'build')));
+
+// Redirect all other routes to index.html
+server.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Error catching endware.
 server.use((err, req, res, next) => {
