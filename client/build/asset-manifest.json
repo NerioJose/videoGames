@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.dd2e3795.css",
+    "main.js": "/static/js/main.85371f6d.js",
+    "static/media/foooter.gif": "/static/media/foooter.db3f6e6f50e327819964.gif",
+    "static/media/gameboy.png": "/static/media/gameboy.af7652b30dfef62de1f0.png",
+    "static/media/maquinasAnimado.gif": "/static/media/maquinasAnimado.57884a401463298b5e90.gif",
+    "static/media/background.jpg": "/static/media/background.e6c25e1f6ecf877b3e5b.jpg",
+    "static/media/LogoBlanco.png": "/static/media/LogoBlanco.6751acc25b5cdd31306a.png",
+    "static/media/header.jpg": "/static/media/header.7646f09f98d2240a613d.jpg",
+    "static/media/loading.gif": "/static/media/loading.204bf8d1789b85858207.gif",
+    "index.html": "/index.html",
+    "main.dd2e3795.css.map": "/static/css/main.dd2e3795.css.map",
+    "main.85371f6d.js.map": "/static/js/main.85371f6d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dd2e3795.css",
+    "static/js/main.85371f6d.js"
+  ]
+}

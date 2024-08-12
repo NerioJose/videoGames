@@ -46,7 +46,7 @@
   bottom: -2px;
   border: 2px solid transparent;
   border-radius: 5px;
-  animation: neon-border s5 infinite;
+  animation: neon-border 5s infinite;
   -webkit-animation: neon-border 5s infinite;
 }
 
