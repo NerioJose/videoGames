@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Constantes de acciones
 export const GET_ALL_GAMES = 'GET_ALL_GAMES';
 export const GET_ALL_GENRES = 'GET_ALL_GENRES';
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
@@ -20,6 +21,10 @@ export const FILTER_AND_SORT = 'FILTER_AND_SORT';
 
 export const PAGE_SIZE = 15;
 
+// Utilizamos una variable de entorno para la URL base de la API
+const API_URL = process.env.REACT_APP_API_URL || 'https://videogames-production-a5a0.up.railway.app';
+
+// Acción para manejar el estado de "cargando"
 export const setLoading = (loading) => {
   return {
     type: SET_LOADING,
@@ -27,10 +32,11 @@ export const setLoading = (loading) => {
   };
 };
 
+// Acción para obtener todos los videojuegos
 export const getAllGames = () => async (dispatch) => {
   try {
     dispatch(setLoading(true));
-    const response = await axios.get('http://localhost:3001/videogames');
+    const response = await axios.get(`${API_URL}/videogames`);
     const videoGames = response.data;
 
     dispatch({ type: GET_ALL_GAMES, payload: videoGames });
@@ -47,18 +53,18 @@ export const getAllGames = () => async (dispatch) => {
   }
 };
 
+// Acción para setear la página actual
 export const setCurrentPage = (page) => (dispatch, getState) => {
-  const { introGames } = getState(); // Obtener filteredVideoGames del estado
+  const { introGames } = getState(); // Obtener introGames del estado
 
-  // Calcular el índice de inicio y obtener los juegos de la página actual
   const startIndex = (page - 1) * PAGE_SIZE;
   const items = introGames.slice(startIndex, startIndex + PAGE_SIZE);
 
-  // Actualizar currentPage y los juegos de la página actual en el estado
   dispatch({ type: SET_CURRENT_PAGE, payload: page });
   dispatch({ type: SET_ITEMS, payload: items });
 };
 
+// Acción para setear los ítems en la vista
 export const setItems = (items) => {
   return {
     type: SET_ITEMS,
@@ -66,70 +72,63 @@ export const setItems = (items) => {
   };
 };
 
+// Acción para obtener todos los géneros
 export const getAllGenres = () => (dispatch) => {
   return axios
-    .get('http://localhost:3001/genres')
+    .get(`${API_URL}/genres`)
     .then((res) => {
       dispatch({ type: GET_ALL_GENRES, payload: res.data });
     })
     .catch((error) => {
-      console.log(error);
+      console.error('Error fetching genres:', error);
     });
 };
 
+// Acción para buscar videojuegos por nombre
 export const searchByName = (name) => {
   return async function (dispatch, getState) {
     try {
       dispatch(setLoading(true));
-      const res = await axios.get(
-        `http://localhost:3001/videogames/name?search=${name}`
-      );
+      const res = await axios.get(`${API_URL}/videogames/name?search=${name}`);
       const results = res.data;
       const totalPages = Math.ceil(results.length / PAGE_SIZE);
       dispatch({ type: SEARCH_BY_NAME, payload: { results, totalPages } });
-      
-      //! Obtenemos el estado actual de los filtros y ordenamientos
-      const { genre, source, sortOrder, sortBy } = getState();
 
-       //! Aplicamos los filtros y ordenamientos actuales a los resultados de la búsqueda
-       dispatch(filterAndSort(genre, source, sortOrder, sortBy, results));
+      const { genre, source, sortOrder, sortBy } = getState();
+      dispatch(filterAndSort(genre, source, sortOrder, sortBy, results));
     } catch (error) {
       console.error('Error searching by name:', error);
-      throw error;
     } finally {
       dispatch(setLoading(false));
     }
   };
 };
 
+// Acción para obtener los detalles de un videojuego
 export const getDetail = (id) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/videogames/${id}`
-      );
-
+      const response = await axios.get(`${API_URL}/videogames/${id}`);
       dispatch({ type: GET_DETAIL, payload: response.data });
     } catch (error) {
-      console.log('Error al obtener los detalles', error);
+      console.error('Error fetching game details:', error);
+    } finally {
       dispatch(setLoading(false));
     }
   };
 };
 
+// Acción para limpiar el detalle
 export const clearDetail = () => {
   return {
     type: CLEAR_DETAIL,
   };
 };
 
+// Acción para crear un nuevo videojuego
 export const postVideoGame = (gameData) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      'http://localhost:3001/videogames/create',
-      gameData
-    );
-
+    const response = await axios.post(`${API_URL}/videogames/create`, gameData);
     dispatch({
       type: POST_VIDEO_GAME,
       payload: response.data,
@@ -139,6 +138,7 @@ export const postVideoGame = (gameData) => async (dispatch) => {
   }
 };
 
+// Filtros y ordenamientos
 export const filterByGenre = (genre) => ({
   type: FILTER_BY_GENRE,
   payload: genre,
@@ -159,6 +159,7 @@ export const sortByRating = (order) => ({
   payload: order,
 });
 
+// Acción para filtrar y ordenar los videojuegos
 export const filterAndSort = (genre, source, sortOrder, sortBy, games = null) => (dispatch, getState) => {
   const stateGames = getState().introGames;
   const gamesToFilterAndSort = games || stateGames;
