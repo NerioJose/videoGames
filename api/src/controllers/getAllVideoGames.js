@@ -47,7 +47,9 @@ const getAllVideoGames = async (req, res) => {
     });
 
     // Obtener los primeros 100 videojuegos de la API
+    console.log("Fetching games from API... Key present:", !!process.env.API_KEY);
     const apiVideoGames = await getFirst100VideoGamesFromAPI();
+    console.log(`Fetched ${apiVideoGames.length} games from external API`);
 
     // Combinar los resultados de la base de datos y la API
     const allVideoGames = [...dbVideoGames, ...apiVideoGames];
