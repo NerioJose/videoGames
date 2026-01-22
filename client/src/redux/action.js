@@ -32,6 +32,7 @@ export const getAllGames = () => async (dispatch) => {
     dispatch(setLoading(true));
     const response = await axios.get('/videogames');
     const videoGames = response.data;
+    console.log("Juegos recibidos en el cliente:", videoGames); // DEBUG LOG
 
     dispatch({ type: GET_ALL_GAMES, payload: videoGames });
     dispatch({
@@ -87,12 +88,12 @@ export const searchByName = (name) => {
       const results = res.data;
       const totalPages = Math.ceil(results.length / PAGE_SIZE);
       dispatch({ type: SEARCH_BY_NAME, payload: { results, totalPages } });
-      
+
       //! Obtenemos el estado actual de los filtros y ordenamientos
       const { genre, source, sortOrder, sortBy } = getState();
 
-       //! Aplicamos los filtros y ordenamientos actuales a los resultados de la búsqueda
-       dispatch(filterAndSort(genre, source, sortOrder, sortBy, results));
+      //! Aplicamos los filtros y ordenamientos actuales a los resultados de la búsqueda
+      dispatch(filterAndSort(genre, source, sortOrder, sortBy, results));
     } catch (error) {
       console.error('Error searching by name:', error);
       throw error;

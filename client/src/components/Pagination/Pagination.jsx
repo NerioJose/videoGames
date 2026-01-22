@@ -25,7 +25,6 @@ const Pagination = () => {
       </button>
       {Array.from({ length: totalPages }, (_, i) => i + 1)
         .filter(page => {
-          // Mostrar primera, última, actual y vecinas
           return page === 1 || page === totalPages || Math.abs(currentPage - page) <= 1;
         })
         .map((page, index, array) => (
@@ -39,7 +38,7 @@ const Pagination = () => {
               {page}
             </button>
           </React.Fragment>
-      ))}
+        ))}
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
