@@ -10,7 +10,7 @@ const Detail = () => {
   const gameDetail = useSelector((state) => state.detailGame);
   const loading = useSelector((state) => state.loading);
 
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   useEffect(() => {
     if (id) {
@@ -45,26 +45,28 @@ const Detail = () => {
           src={gameDetail.image}
           alt='detailImg'
         />
-        <h1 className={style.name}>{gameDetail.name}</h1>
-        <p className={style.description}>{gameDetail.description}</p>
+        <div className={style.infoColumn}>
+          <h1 className={style.name}>{gameDetail.name}</h1>
 
-        <div className={style.descriptFinal}>
-          <p className={style.platforms}>
-            <span>Platforms: </span>
-            {gameDetail.platforms}
-          </p>
-          <p className={style.date}>
-            <span>Released: </span>
-            {gameDetail.released}
-          </p>
-          <p className={style.rating}>
-            <span>Rating: </span>
-            {gameDetail.rating}
-          </p>
-          <p className={style.genres}>
-            <span>Genres: </span>
-            {gameDetail.genres?.map((genre) => genre.name).join(', ')}
-          </p>
+          <div className={style.descriptFinal}>
+            <p className={style.platforms}>
+              <span>Platforms: </span>{gameDetail.platforms}
+            </p>
+            <p className={style.date}>
+              <span>Released: </span>{gameDetail.released}
+            </p>
+            <p className={style.rating}>
+              <span>Rating: </span>{gameDetail.rating}
+            </p>
+            <p className={style.genres}>
+              <span>Genres: </span>{gameDetail.genres?.map((genre) => genre.name).join(', ')}
+            </p>
+          </div>
+
+          <div
+            className={style.description}
+            dangerouslySetInnerHTML={{ __html: gameDetail.description }}
+          />
         </div>
       </div>
     </div>

@@ -1,102 +1,165 @@
+/* Mobile First Design */
 .container {
-  position: relative;
-  top: 0px;
   width: 100%;
-  height: 1000px;
-  z-index: -2;
+  min-height: 100vh;
+  padding: 80px 0 40px 0;
+  /* Espacio para navbar arriba */
   background-image: url('../../media/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  /* Empieza arriba para scroll en movil */
 }
 
 .detailContainer {
   width: 90%;
-  height: 600px;
+  max-width: 1000px;
+  /* Limite para pantallas grandes */
+  background-color: rgba(0, 0, 0, 0.85);
+  /* Fondo oscuro semitransparente */
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  left: 5%;
-  top: 150px;
-  box-shadow: 0px 10px 15px #000;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  color: #fff;
 }
 
+/* Imagen del juego */
 .detailImg {
-  position: absolute;
   width: 100%;
-  height: 100%;
-  z-index: -1;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+  height: 250px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Contenido */
+.contentWrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .name {
-  color: #fff;
-  position: relative;
-  top: -70px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 20px;
-  text-shadow: 0px 10px 15px #000;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  font-size: 20px;
+  font-size: 1.8rem;
+  margin: 0;
+  text-align: center;
+  color: #ffcc00;
+  /* Color destacado */
+  text-shadow: 2px 2px 4px black;
 }
 
 .description {
-  width: 90%;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 20px;
-  text-shadow: 0px 10px 15px #000;
-  font-size: 15px;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: justify;
+  background-color: rgba(255, 255, 255, 0.05);
+  /* Leve contraste */
+  padding: 15px;
+  border-radius: 10px;
 }
 
+/* Meta info (Plataformas, Generos, etc) */
 .descriptFinal {
-  width: 90%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: relative;
-  top: 40px;
-  color: #fff;
+  flex-direction: column;
+  /* Stack en movil */
+  gap: 15px;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 20px;
-  text-shadow: 0px 10px 15px #000;
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  -ms-border-radius: 5;
-  -o-border-radius: 5;
-  font-size: 12px;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.descriptFinal p {
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 .descriptFinal span {
-  font-size: 15px;
   font-weight: bold;
+  color: #00d2ff;
+  display: block;
+  /* Etiqueta arriba del valor en movil */
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
+/* Desktop / Tablet Styles */
+@media (min-width: 768px) {
+  .container {
+    padding-top: 100px;
+  }
+
+  .detailContainer {
+    flex-direction: row;
+    /* Lado a lado */
+    align-items: stretch;
+    height: auto;
+    min-height: 500px;
+  }
+
+  .detailImg {
+    width: 40%;
+    height: auto;
+    /* Altura automatica o llena el contenedor */
+    object-fit: cover;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Nuevo contenedor interno para agrupar texto en desktop */
+  .infoColumn {
+    width: 60%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .name {
+    font-size: 2.5rem;
+    text-align: left;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    /* Scroll si el texto es muy largo */
+  }
+
+  .descriptFinal {
+    flex-direction: row;
+    /* Horizontal en desktop */
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* Envolver si es necesario */
+  }
+
+  .descriptFinal span {
+    display: inline;
+    margin-right: 5px;
+  }
+}
+
+/* Loading */
 .loadingContainer {
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #000;
 }
 
 .imgLoading {
-  width: 100%;
+  width: 100px;
+  height: auto;
 }
