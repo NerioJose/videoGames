@@ -14,6 +14,12 @@ const sequelize = DB_DEPLOY
   ? new Sequelize(DB_DEPLOY, {
     logging: false,
     native: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   })
   : new Sequelize(
     `postgres://${DB_USER || 'postgres'}:${DB_PASSWORD || 'password'}@${DB_HOST || 'localhost'
