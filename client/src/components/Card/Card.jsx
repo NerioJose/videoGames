@@ -25,7 +25,7 @@ const Card = ({ id, name, background_image, genres }) => {
           <h2 className={style.name}>{name}</h2>
           <div className={style.genres}>
             <span>Genero: </span>{' '}
-            {genres && genres.map((genre) => genre.name).join(', ')}
+            {Array.isArray(genres) && genres.map((genre) => genre.name).join(', ')}
           </div>
         </div>
       </Link>
