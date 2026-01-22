@@ -4,6 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
+if (DB_DEPLOY) {
+  console.log('Using DB_DEPLOY connection (SSL enabled). URL starting with:', DB_DEPLOY.substring(0, 20) + '...');
+} else {
+  console.log('Using Local connection (No SSL)');
+}
+
 const sequelize = DB_DEPLOY
   ? new Sequelize(DB_DEPLOY, {
     logging: false,
