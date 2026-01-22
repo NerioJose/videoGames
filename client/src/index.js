@@ -8,6 +8,7 @@ import './index.css';
 import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_API || 'http://localhost:3001';
+console.log("API URL Configurada:", axios.defaults.baseURL); // DEBUG LOG
 
 ReactDOM.render(
   <Provider store={store}>
