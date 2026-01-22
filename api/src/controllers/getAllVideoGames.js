@@ -49,9 +49,25 @@ const getAllVideoGames = async (req, res) => {
     const dbVideoGames = await Videogame.findAll({
       include: {
         model: Genres,
-        attributes: ['name'],
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
       },
     });
+
+    // Formatear los juegos de la DB para que coincidan con la estructura de la API
+    const formattedDbGames = dbVideoGames.map(game => ({
+      id: game.id,
+      name: game.name,
+      description: game.description,
+      platforms: game.platforms, // Asumiendo que ya se guarda como string o array compatible
+      background_image: game.background_image,
+      released: game.released,
+      rating: game.rating,
+      createdInDb: true, // FLAG IMPORTANTE para el frontend
+      genres: game.Genres.map(g => ({ id: g.id, name: g.name })) // Mapear Genres -> genres
+    }));
 
     // Obtener los primeros 100 videojuegos de la API
     console.log("Fetching games from API... Key present:", !!process.env.API_KEY);
@@ -59,7 +75,7 @@ const getAllVideoGames = async (req, res) => {
     console.log(`Fetched ${apiVideoGames.length} games from external API`);
 
     // Combinar los resultados de la base de datos y la API
-    const allVideoGames = [...dbVideoGames, ...apiVideoGames];
+    const allVideoGames = [...formattedDbGames, ...apiVideoGames];
 
     // Devolver los videojuegos combinados como respuesta
     res.status(200).json(allVideoGames);
