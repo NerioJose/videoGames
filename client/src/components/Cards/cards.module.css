@@ -1,10 +1,12 @@
 .container {
   width: 100%;
   height: 840px;
+  /* Responsive grid: min 250px per card, filling available space */
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px; /* Espacio entre los elementos, ajusta según tus necesidades */
-  overflow: auto; /* Permite el desplazamiento y solo mostrará las barras cuando sea necesario */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  overflow: auto;
+  /* Permite el desplazamiento y solo mostrará las barras cuando sea necesario */
   position: relative;
   box-sizing: border-box;
   padding: 40px;
