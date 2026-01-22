@@ -23,15 +23,22 @@ const Pagination = () => {
       >
         Prev
       </button>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-        <button
-          className={style.button}
-          key={page}
-          onClick={() => handlePageChange(page)}
-          disabled={page === currentPage}
-        >
-          {page}
-        </button>
+      {Array.from({ length: totalPages }, (_, i) => i + 1)
+        .filter(page => {
+          // Mostrar primera, última, actual y vecinas
+          return page === 1 || page === totalPages || Math.abs(currentPage - page) <= 1;
+        })
+        .map((page, index, array) => (
+          <React.Fragment key={page}>
+            {index > 0 && page - array[index - 1] > 1 && <span className={style.dots}>...</span>}
+            <button
+              className={`${style.button} ${page === currentPage ? style.active : ''}`}
+              onClick={() => handlePageChange(page)}
+              disabled={page === currentPage}
+            >
+              {page}
+            </button>
+          </React.Fragment>
       ))}
       <button
         onClick={() => handlePageChange(currentPage + 1)}
