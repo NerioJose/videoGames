@@ -12,8 +12,17 @@ const getFirst100VideoGamesFromAPI = async () => {
   const totalPages = 5; // Para obtener 100 juegos, necesitamos 5 páginas (15 juegos por página)
 
   try {
-    for (let i = 0; i < totalPages; i++) {
-      const response = await axios.get(`${URL}&page=${page}`);
+    // Generar array de promesas para las 5 páginas
+    const promises = [];
+    for (let i = 1; i <= totalPages; i++) {
+      promises.push(axios.get(`${URL}&page=${i}`));
+    }
+
+    // Ejecutar todas las peticiones en paralelo
+    const responses = await Promise.all(promises);
+
+    // Procesar resultados
+    responses.forEach(response => {
       const videoGames = response.data.results.map((game) => ({
         id: game.id,
         name: game.name,
@@ -24,10 +33,8 @@ const getFirst100VideoGamesFromAPI = async () => {
         rating: game.rating,
         genres: game.genres.map((g) => ({ id: g.id, name: g.name })),
       }));
-
       allVideoGames = [...allVideoGames, ...videoGames];
-      page++;
-    }
+    });
 
     return allVideoGames;
   } catch (error) {
