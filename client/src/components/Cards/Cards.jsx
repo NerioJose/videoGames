@@ -25,13 +25,25 @@ const Cards = () => {
     gamesByName.length > 0
       ? gamesByName
       : filteredVideoGames.length > 0
-      ? filteredVideoGames
-      : introGames;
+        ? filteredVideoGames
+        : introGames;
 
   // Calculamos los índices de inicio y fin para los juegos de la página actual
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, gamesToDisplay.length);
-  const gamesToShow = gamesToDisplay.slice(startIndex, endIndex);
+  const gamesToShow = Array.isArray(gamesToDisplay)
+    ? gamesToDisplay.slice(startIndex, endIndex)
+    : [];
+
+  if (!Array.isArray(gamesToShow) || gamesToShow.length === 0) {
+    return (
+      <div className={style.container}>
+        <p style={{ color: 'white', textAlign: 'center', fontSize: '20px' }}>
+          No games found. Please try again later.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className={style.container}>
