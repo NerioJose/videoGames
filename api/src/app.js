@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -11,7 +10,21 @@ const server = express();
 
 server.name = 'API';
 
-server.use(cors()); // CORS básico que permite todo (*)
+// CORS DEFINITIVO - Maneja todas las peticiones incluyendo preflight OPTIONS
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+
+  // Responder inmediatamente a las peticiones OPTIONS (preflight)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  next();
+});
+
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
