@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const pg = require('pg');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 if (DB_DEPLOY) {
@@ -14,6 +15,7 @@ const sequelize = DB_DEPLOY
   ? new Sequelize(DB_DEPLOY, {
     logging: false,
     native: false,
+    dialectModule: pg, // FIX: Necesario para Vercel
     dialectOptions: {
       ssl: {
         require: true,
@@ -27,6 +29,7 @@ const sequelize = DB_DEPLOY
     {
       logging: false,
       native: false,
+      dialectModule: pg,
     }
   );
 const basename = path.basename(__filename);
