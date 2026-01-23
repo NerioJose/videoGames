@@ -10,7 +10,6 @@ const Cards = () => {
   const currentPage = useSelector((state) => state.currentPage);
   const introGames = useSelector((state) => state.introGames);
   const filteredVideoGames = useSelector((state) => state.filteredVideoGames);
-  const gamesByName = useSelector((state) => state.gamesByName);
   const dispatch = useDispatch();
   const pageSize = 15;
 
