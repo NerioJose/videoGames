@@ -1,5 +1,6 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllGames } from '../../redux/action';
 import Card from '../Card/Card';
 import style from './cards.module.css';
 import imgLoading from '../../media/loading.gif';
@@ -10,7 +11,14 @@ const Cards = () => {
   const introGames = useSelector((state) => state.introGames);
   const filteredVideoGames = useSelector((state) => state.filteredVideoGames);
   const gamesByName = useSelector((state) => state.gamesByName);
-  const pageSize = 15; // Tamaño de la página
+  const dispatch = useDispatch();
+  const pageSize = 15;
+
+  useEffect(() => {
+    if (introGames.length === 0) {
+      dispatch(getAllGames());
+    }
+  }, [dispatch, introGames.length]);
 
   if (loading) {
     return (
@@ -20,20 +28,13 @@ const Cards = () => {
     );
   }
 
-  // Determinar qué conjunto de juegos mostrar
-  const gamesToDisplay =
-    gamesByName.length > 0
-      ? gamesByName
-      : filteredVideoGames.length > 0
-        ? filteredVideoGames
-        : introGames;
+  // La fuente de verdad centralizada es filteredVideoGames
+  const gamesToDisplay = filteredVideoGames;
 
   // Calculamos los índices de inicio y fin para los juegos de la página actual
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, gamesToDisplay.length);
-  const gamesToShow = Array.isArray(gamesToDisplay)
-    ? gamesToDisplay.slice(startIndex, endIndex)
-    : [];
+  const gamesToShow = gamesToDisplay.slice(startIndex, endIndex);
 
   if (!Array.isArray(gamesToShow) || gamesToShow.length === 0) {
     return (

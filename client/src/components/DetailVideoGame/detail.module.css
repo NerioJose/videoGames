@@ -1,165 +1,190 @@
-/* Mobile First Design */
 .container {
   width: 100%;
-  min-height: 100vh;
-  padding: 80px 0 40px 0;
-  /* Espacio para navbar arriba */
-  background-image: url('../../media/background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  min-height: calc(100vh - var(--header-height));
+  padding: 8rem 2rem 4rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* Empieza arriba para scroll en movil */
-}
-
-.detailContainer {
-  width: 90%;
-  max-width: 1000px;
-  /* Limite para pantallas grandes */
-  background-color: rgba(0, 0, 0, 0.85);
-  /* Fondo oscuro semitransparente */
-  border-radius: 15px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
+  position: relative;
   overflow: hidden;
-  margin-bottom: 40px;
-  color: #fff;
 }
 
-/* Imagen del juego */
-.detailImg {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Contenido */
-.contentWrapper {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.name {
-  font-size: 1.8rem;
-  margin: 0;
-  text-align: center;
-  color: #ffcc00;
-  /* Color destacado */
-  text-shadow: 2px 2px 4px black;
-}
-
-.description {
-  font-size: 1rem;
-  line-height: 1.6;
-  text-align: justify;
-  background-color: rgba(255, 255, 255, 0.05);
-  /* Leve contraste */
-  padding: 15px;
-  border-radius: 10px;
-}
-
-/* Meta info (Plataformas, Generos, etc) */
-.descriptFinal {
-  display: flex;
-  flex-direction: column;
-  /* Stack en movil */
-  gap: 15px;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-
-.descriptFinal p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.descriptFinal span {
-  font-weight: bold;
-  color: #00d2ff;
-  display: block;
-  /* Etiqueta arriba del valor en movil */
-  margin-bottom: 5px;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-}
-
-/* Desktop / Tablet Styles */
-@media (min-width: 768px) {
-  .container {
-    padding-top: 100px;
-  }
-
-  .detailContainer {
-    flex-direction: row;
-    /* Lado a lado */
-    align-items: stretch;
-    height: auto;
-    min-height: 500px;
-  }
-
-  .detailImg {
-    width: 40%;
-    height: auto;
-    /* Altura automatica o llena el contenedor */
-    object-fit: cover;
-    border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Nuevo contenedor interno para agrupar texto en desktop */
-  .infoColumn {
-    width: 60%;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .name {
-    font-size: 2.5rem;
-    text-align: left;
-  }
-
-  .description {
-    font-size: 1.1rem;
-    max-height: 300px;
-    overflow-y: auto;
-    /* Scroll si el texto es muy largo */
-  }
-
-  .descriptFinal {
-    flex-direction: row;
-    /* Horizontal en desktop */
-    justify-content: space-between;
-    flex-wrap: wrap;
-    /* Envolver si es necesario */
-  }
-
-  .descriptFinal span {
-    display: inline;
-    margin-right: 5px;
-  }
-}
-
-/* Loading */
+/* Loader Gigante Gamer Core */
 .loadingContainer {
-  width: 100%;
-  height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #000;
+  height: 60vh;
+  width: 100%;
+  gap: 2rem;
 }
 
 .imgLoading {
-  width: 100px;
-  height: auto;
+  width: 250px;
+  /* Tamaño aumentado significativamente */
+  filter: drop-shadow(0 0 30px var(--cyber-purple));
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: drop-shadow(0 0 50px var(--cyber-purple));
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+}
+
+.loadingText {
+  color: var(--voltage-yellow);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px rgba(254, 254, 51, 0.5);
+}
+
+/* Detail Card - Tactical HUD Design */
+.detailCard {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(15px);
+  width: 100%;
+  max-width: 1100px;
+  border: 1px solid rgba(188, 19, 254, 0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+}
+
+.imageSection {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--cyber-purple);
+}
+
+.detailImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.2) contrast(1.1);
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to top, rgba(15, 23, 42, 1), transparent);
+}
+
+.infoSection {
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  background-image: linear-gradient(rgba(188, 19, 254, 0.03) 1px, transparent 1px);
+  background-size: 100% 4px;
+}
+
+.header {
+  border-left: 5px solid var(--voltage-yellow);
+  padding-left: 2rem;
+}
+
+.idTag {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.name {
+  font-size: 4rem;
+  font-weight: 950;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  line-height: 0.9;
+  margin-top: 0.5rem;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metaItem h4 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--voltage-yellow);
+  letter-spacing: 3px;
+  margin-bottom: 0.75rem;
+  font-weight: 900;
+}
+
+.metaItem p {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.description {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.description h3 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  font-weight: 900;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+  display: inline-block;
+}
+
+.errorMessage {
+  color: var(--neon-pink);
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  margin-top: 10rem;
+  text-shadow: 0 0 20px var(--neon-pink);
+}
+
+@media (max-width: 768px) {
+  .name {
+    font-size: 2.5rem;
+  }
+
+  .imageSection {
+    height: 300px;
+  }
+
+  .infoSection {
+    padding: 2rem;
+  }
 }

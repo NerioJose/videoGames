@@ -38,7 +38,14 @@ const initialState = {
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_ALL_GAMES:
-      return { ...state, introGames: payload };
+      return {
+        ...state,
+        introGames: payload,
+        filteredVideoGames: payload,
+        items: payload.slice(0, PAGE_SIZE),
+        totalPages: Math.ceil(payload.length / PAGE_SIZE),
+        loading: false
+      };
 
     case GET_ALL_GENRES:
       return { ...state, genres: payload };
@@ -52,22 +59,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case SET_ITEMS:
       return { ...state, items: payload };
 
-    case SEARCH_BY_NAME:
-      const searchResults = payload.results;
-      const searchTotalPages = Math.ceil(searchResults.length / PAGE_SIZE);
-
-      return {
-        ...state,
-        gamesByName: searchResults,
-        totalPages: searchTotalPages,
-        currentPage: 1,
-        items: searchResults.slice(0, PAGE_SIZE),
-      };
     case SET_LOADING:
-      return {
-        ...state,
-        loading: payload,
-      };
+      return { ...state, loading: payload };
 
     case GET_DETAIL:
       return {
@@ -75,138 +68,95 @@ const rootReducer = (state = initialState, { type, payload }) => {
         detailGame: payload,
         loading: false,
       };
+
     case CLEAR_DETAIL:
-      return {
-        ...state,
-        detailGame: null,
-      };
-    case POST_VIDEO_GAME:
+      return { ...state, detailGame: null };
+
+    case POST_VIDEO_GAME: {
+      const updatedIntroGames = [payload, ...state.introGames];
+      let newFiltered = [...updatedIntroGames];
+
+      // Re-aplicar filtros actuales al nuevo set para que no "desaparezca" el juego
+      if (state.genre !== 'All') {
+        newFiltered = newFiltered.filter(g =>
+          (g.genres && g.genres.some(gen => gen.name === state.genre)) ||
+          (g.Genres && g.Genres.some(gen => gen.name === state.genre))
+        );
+      }
+      if (state.source !== 'All') {
+        newFiltered = newFiltered.filter(g =>
+          state.source === 'API' ? !g.createdInDb : g.createdInDb
+        );
+      }
+
+      newFiltered.sort((a, b) => {
+        if (state.sortBy === 'name') {
+          return state.sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        }
+        return state.sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating;
+      });
+
       return {
         ...state,
         createdGame: payload,
+        introGames: updatedIntroGames,
+        filteredVideoGames: newFiltered,
+        items: newFiltered.slice(0, PAGE_SIZE),
+        totalPages: Math.ceil(newFiltered.length / PAGE_SIZE),
+        currentPage: 1, // Reiniciar a la primera página para ver el juego recién creado
       };
-    case FILTER_BY_GENRE:
-      const filteredByGenre =
-        payload === 'All'
-          ? state.introGames
-          : state.introGames.filter((game) => {
-              // Verificar si el juego coincide con el género seleccionado
-              const matchGenre =
-                payload === 'All' ||
-                (game.genres &&
-                  game.genres.some((genre) => genre.name === payload)) ||
-                (game.Genres &&
-                  game.Genres.some((genre) => genre.name === payload));
-              return matchGenre;
-            });
+    }
 
-      const totalPagesGenre = Math.ceil(filteredByGenre.length / PAGE_SIZE);
-      return {
-        ...state,
-        genre: payload,
-        filteredVideoGames: payload === 'All' ? [] : filteredByGenre,
-        totalPages: totalPagesGenre,
-      };
-
-    case FILTER_BY_SOURCE:
-      let filteredBySource;
-      if (payload === 'All') {
-        // Si se selecciona 'All', mostrar todos los juegos
-        filteredBySource = state.introGames;
-      } else {
-        // Filtrar los juegos según el tipo de ID
-        filteredBySource = state.introGames.filter((game) =>
-          payload === 'API'
-            ? typeof game.id === 'number'
-            : typeof game.id !== 'number'
-        );
-      }
-
-      if (filteredBySource.length === 0) {
-        filteredBySource = [];
-      }
-
-      const totalPagesSource = Math.ceil(filteredBySource.length / PAGE_SIZE);
-      return {
-        ...state,
-        source: payload,
-        filteredVideoGames: payload === 'All' ? [] : filteredBySource,
-        totalPages: totalPagesSource,
-      };
-    case SORT_BY_ALPHABET:
-      const sortedAlphabetically = [...state.introGames].sort((a, b) =>
-        payload === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
-      );
-      const totalPagesAlphabet = Math.ceil(
-        sortedAlphabetically.length / PAGE_SIZE
-      );
-      return {
-        ...state,
-        sortOrder: payload,
-        introGames: sortedAlphabetically,
-        totalPages: totalPagesAlphabet,
-      };
-
-    case SORT_BY_RATING:
-      const sortedByRating = [...state.introGames].sort((a, b) =>
-        payload === 'asc' ? a.rating - b.rating : b.rating - a.rating
-      );
-      const totalPagesRating = Math.ceil(sortedByRating.length / PAGE_SIZE);
-      return {
-        ...state,
-        sortOrder: payload,
-        introGames: sortedByRating,
-        totalPages: totalPagesRating,
-      };
-    case FILTER_AND_SORT:
+    case FILTER_AND_SORT: {
       const { genre, source, sortOrder, sortBy, games } = payload;
-      let filteredGames = [...games];
+      let filtered = [...games];
 
-      // Filtrar por género
       if (genre !== 'All') {
-        filteredGames = filteredGames.filter(
-          (game) =>
-            (game.genres && game.genres.some((g) => g.name === genre)) ||
-            (game.Genres && game.Genres.some((g) => g.name === genre))
+        filtered = filtered.filter(g =>
+          (g.genres && g.genres.some(gen => gen.name === genre)) ||
+          (g.Genres && g.Genres.some(gen => gen.name === genre))
         );
       }
-
-      // Filtrar por fuente
       if (source !== 'All') {
-        filteredGames = filteredGames.filter((game) =>
-          source === 'API'
-            ? typeof game.id === 'number'
-            : typeof game.id !== 'number'
+        filtered = filtered.filter(g =>
+          source === 'API' ? !g.createdInDb : g.createdInDb
         );
       }
 
-      // Ordenar
-      if (sortBy === 'name') {
-        filteredGames = filteredGames.sort((a, b) =>
-          sortOrder === 'asc'
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name)
-        );
-      } else if (sortBy === 'rating') {
-        filteredGames = filteredGames.sort((a, b) =>
-          sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating
-        );
-      }
+      filtered.sort((a, b) => {
+        if (sortBy === 'name') {
+          return sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        }
+        return sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating;
+      });
 
-      const totalPages = Math.ceil(filteredGames.length / PAGE_SIZE);
       return {
         ...state,
         genre,
         source,
         sortOrder,
         sortBy,
-        filteredVideoGames: filteredGames,
-        totalPages,
+        filteredVideoGames: filtered,
+        items: filtered.slice(0, PAGE_SIZE),
+        totalPages: Math.ceil(filtered.length / PAGE_SIZE),
         currentPage: 1,
-        items: filteredGames.slice(0, PAGE_SIZE),
       };
+    }
+
+    case SEARCH_BY_NAME: {
+      const searchResults = payload.results;
+      return {
+        ...state,
+        gamesByName: searchResults,
+        filteredVideoGames: searchResults,
+        items: searchResults.slice(0, PAGE_SIZE),
+        totalPages: Math.ceil(searchResults.length / PAGE_SIZE),
+        currentPage: 1,
+        genre: 'All',
+        source: 'All'
+      };
+    }
+
     default:
       return state;
   }

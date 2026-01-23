@@ -45,7 +45,11 @@ const postVideoGame = async (req, res) => {
       include: Genres,
     });
 
-    return res.status(201).json(createdGameWithGenres);
+    return res.status(201).json({
+      ...createdGameWithGenres.toJSON(),
+      genres: createdGameWithGenres.Genres.map(g => ({ id: g.id, name: g.name })),
+      createdInDb: true
+    });
   } catch (error) {
     console.error('Error al crear el videojuego:', error);
     res.status(500).json({ error: 'Error al crear el videojuego' });

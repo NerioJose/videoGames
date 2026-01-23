@@ -13,6 +13,8 @@ import Detail from './components/DetailVideoGame/Detail';
 import CreateGame from './components/CreateGameForm/CreateGame';
 import Footer from './components/Footer/Footer';
 
+import './App.css';
+
 const App = () => {
   const dispatch = useDispatch();
 
@@ -22,36 +24,37 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div className='App'>
+    <div className='main-container'>
       <Router>
         <Route
           path='/'
-          render={({ location }) => (
-            <>
-              {location.pathname !== routered.Bienvenida && (
-                <>
-                  <Navigation />
-                  <Footer />
-                </>
-              )}
-              <Switch>
-                <Route
-                  exact
-                  path={routered.Bienvenida}
-                  component={Bienvenida}
-                />
+          render={({ location }) => {
+            const isBienvenida = location.pathname === routered.Bienvenida;
+            return (
+              <>
+                {!isBienvenida && <Navigation />}
+                <main className={!isBienvenida ? 'content-wrapper fade-in' : ''}>
+                  <Switch>
+                    <Route
+                      exact
+                      path={routered.Bienvenida}
+                      component={Bienvenida}
+                    />
 
-                <Route exact path={routered.Home}>
-                  <Cards />
-                  <Pagination />
-                </Route>
+                    <Route exact path={routered.Home}>
+                      <Cards />
+                      <Pagination />
+                    </Route>
 
-                <Route exact path={routered.create} component={CreateGame} />
+                    <Route exact path={routered.create} component={CreateGame} />
 
-                <Route exact path={routered.detailGame} component={Detail} />
-              </Switch>
-            </>
-          )}
+                    <Route exact path={routered.detailGame} component={Detail} />
+                  </Switch>
+                </main>
+                {!isBienvenida && <Footer />}
+              </>
+            );
+          }}
         />
       </Router>
     </div>

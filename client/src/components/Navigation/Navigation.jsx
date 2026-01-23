@@ -18,7 +18,6 @@ const Navigation = () => {
   const handleHome = () => {
     dispatch(getAllGames());
     history.push('/home');
-    window.location.reload();
   };
 
   const handleFilterAndSort = (
@@ -48,51 +47,72 @@ const Navigation = () => {
 
   return (
     <div className={style.container}>
-      <Link to={'/home'} className={style.btnHome}>
-        <button className={style.buttonHome} onClick={handleHome}>
-          Home
-        </button>
-      </Link>
-      <Link to={'/videogames/create'} className={style.btnHome}>
-        <button className={style.buttonCreate}>Create New Game</button>
-      </Link>
+      <div className={style.navLinks}>
+        <Link to={'/home'} className={style.btnHome}>
+          <button className={style.buttonHome} onClick={handleHome}>
+            Home
+          </button>
+        </Link>
+        <Link to={'/videogames/create'} className={style.btnHome}>
+          <button className={style.buttonCreate}>Create</button>
+        </Link>
+      </div>
+
       <SearchBar />
+
       {location.pathname === '/home' && (
-        <>
+        <div className={style.filterSection}>
           <div className={style.filterOptions}>
-            <h3>Filter by Genre:</h3>
-            <select onChange={handleFilterByGenre}>
-              <option value='All'>All</option>
-              <option value='Action'>Action</option>
-              <option value='Adventure'>Adventure</option>
-              <option value='RPG'>RPG</option>
-              <option value='Simulation'>Simulation</option>
-              <option value='Strategy'>Strategy</option>
-            </select>
-          </div>
-          <div className={style.filterOptions}>
-            <h3>Filter by Source:</h3>
-            <select onChange={handleFilterBySource}>
-              <option value='All'>All</option>
-              <option value='API'>API</option>
-              <option value='Database'>Database</option>
-            </select>
-          </div>
-          <div className={style.sortOptions}>
-            <h3>Sort by:</h3>
+            <h3>Genre</h3>
             <div className={style.filters}>
-              <select onChange={handleSortByAlphabet}>
-                <option value='asc'>Alphabet (A-Z)</option>
-                <option value='desc'>Alphabet (Z-A)</option>
-              </select>
-              <select onChange={handleSortByRating}>
-                <option value='asc'>Rating (ascendente)</option>
-                <option value='desc'>Rating (descendente)</option>
+              <select onChange={handleFilterByGenre} value={genre}>
+                <option value='All'>All</option>
+                <option value='Action'>Action</option>
+                <option value='Indie'>Indie</option>
+                <option value='Adventure'>Adventure</option>
+                <option value='RPG'>RPG</option>
+                <option value='Strategy'>Strategy</option>
+                <option value='Shooter'>Shooter</option>
+                <option value='Casual'>Casual</option>
+                <option value='Simulation'>Simulation</option>
+                <option value='Puzzle'>Puzzle</option>
+                <option value='Arcade'>Arcade</option>
+                <option value='Platformer'>Platformer</option>
+                <option value='Racing'>Racing</option>
+                <option value='Massively Multiplayer'>Massively Multiplayer</option>
+                <option value='Sports'>Sports</option>
+                <option value='Fighting'>Fighting</option>
               </select>
             </div>
           </div>
-        </>
+          <div className={style.filterOptions}>
+            <h3>Source</h3>
+            <div className={style.filters}>
+              <select onChange={handleFilterBySource} value={source}>
+                <option value='All'>All</option>
+                <option value='API'>API</option>
+                <option value='Database'>Database</option>
+              </select>
+            </div>
+          </div>
+          <div className={style.sortOptions}>
+            <h3>Sort</h3>
+            <div className={style.filters}>
+              <select onChange={handleSortByAlphabet} value={sortBy === 'name' ? sortOrder : ''}>
+                <option value='' disabled hidden>A-Z</option>
+                <option value='asc'>Ascendente (A-Z)</option>
+                <option value='desc'>Descendente (Z-A)</option>
+              </select>
+              <select onChange={handleSortByRating} value={sortBy === 'rating' ? sortOrder : ''}>
+                <option value='' disabled hidden>Rating</option>
+                <option value='asc'>Rating ↑</option>
+                <option value='desc'>Rating ↓</option>
+              </select>
+            </div>
+          </div>
+        </div>
       )}
+      <div className={style.hudDecoration}></div>
     </div>
   );
 };

@@ -1,195 +1,272 @@
+/* createGame.module.css - REFINED HUD EDITION */
 .createGameContainer {
   width: 100%;
-  height: 950px;
-  background-image: url('../../media/background.jpg');
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.createGameContainer textarea {
-  resize: none;
-  height: 80px;
-}
-
-.containForm {
-  width: 400px;
-  height: 50%;
+  min-height: calc(100vh - var(--header-height));
+  padding: 8rem 2rem 4rem;
+  /* Ajustado para el Navbar fijo */
+  max-width: 1300px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  gap: 4rem;
   position: relative;
-  top: -50px;
-  box-sizing: border-box;
-  padding: 10px;
+  z-index: 1;
 }
 
-.imgFondo {
-  position: relative;
+.createGameContainer::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 800px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url('../../media/gameboy.png');
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  color: #fff;
-  top: 0px;
+  height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+  background-size: 100% 4px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.pageHeader {
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
 }
 
 .title {
-  position: absolute;
+  font-size: 5rem;
+  font-weight: 950;
   color: #fff;
-  font-size: 35px;
-  font-weight: bold;
-  top: 200px;
-  z-index: 20;
-  -webkit-text-stroke: 3px black;
+  text-transform: uppercase;
+  letter-spacing: -4px;
+  line-height: 0.8;
+  margin: 0;
+  background: linear-gradient(to bottom, #fff, #666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(188, 19, 254, 0.4));
+}
+
+.subtitle {
+  color: var(--cyber-purple);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--cyber-purple);
+  background: rgba(188, 19, 254, 0.1);
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
+}
+
+.formCard {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 4rem;
+  border: 1px solid rgba(188, 19, 254, 0.3);
+  position: relative;
+  border-radius: 4px;
+}
+
+.formCard::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 40px;
+  height: 40px;
+  border-top: 4px solid var(--cyber-purple);
+  border-left: 4px solid var(--cyber-purple);
+}
+
+.formCard::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 40px;
+  height: 40px;
+  border-bottom: 4px solid var(--cyber-purple);
+  border-right: 4px solid var(--cyber-purple);
+}
+
+.containForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.75rem;
+  color: var(--voltage-yellow);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 0.8rem;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  border-color: var(--voltage-yellow);
+  box-shadow: 0 0 20px rgba(254, 254, 51, 0.2);
+  outline: none;
+}
+
+.gridGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.chipsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chip {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #888;
+  padding: 0.6rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.activeChip {
+  background: var(--cyber-purple);
+  color: #000;
+  border-color: var(--cyber-purple);
+  box-shadow: 0 0 15px var(--cyber-purple);
 }
 
 .bottonCreate {
-  position: absolute;
-  font-weight: bold;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
+  margin-top: 2rem;
+  background: var(--primary-color);
+  color: #000;
   border: none;
-  box-shadow: 0px 10px 15px #000;
-  left: -245px;
-  top: 350px;
-}
-
-.bottonCreate:hover {
-  transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  -moz-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
+  padding: 1.5rem;
+  font-weight: 950;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 5px;
   cursor: pointer;
+  transition: all 0.3s;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
 }
 
-.selectedOptions {
-  width: 400px;
-  height: auto;
-  background-color: #000;
-  color: #fff;
-  position: absolute;
-  display: none;
-  left: 100px;
-  top: 360px;
+.bottonCreate:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px var(--primary-color);
 }
 
-.selectedOptions.visible {
-  display: block;
-  display: flex;
-  justify-content: space-around;
-  align-items: left;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: 20px;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  box-shadow: 0px 7px 15px #078ffd;
-  font-size: 12px;
+.bottonCreate:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 
-.errorName,
-.errorDescription,
-.errorImage,
-.errorPlatforms,
-.errorGenres,
-.errorReleased,
-.errorRating {
-  color: red;
-  position: absolute;
+.previewCard {
+  position: sticky;
+  top: 140px;
 }
 
-.errorName {
-  width: 100%;
-  top: 30px;
-  left: 400px;
+.previewTitle {
+  font-size: 0.8rem;
+  color: var(--secondary-color);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.errorDescription {
-  width: 100%;
-  top: 90px;
-  left: 400px;
+.mockCard {
+  background: #000;
+  border: 1px solid var(--secondary-color);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
 }
 
-.errorPlatforms {
-  width: 100%;
-  top: 208px;
-  left: 400px;
+.mockImage {
+  aspect-ratio: 16/9;
+  background: #111;
+  border-bottom: 1px solid var(--secondary-color);
 }
 
-.errorGenres {
-  width: 100%;
-  top: 270px;
-  left: 400px;
+.mockInfo {
+  padding: 2.5rem;
 }
 
-.errorReleased {
-  width: 100%;
-  top: 328px;
-  left: 400px;
+.mockName {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
 }
 
-.errorRating {
-  width: 100%;
-  top: 370px;
-  left: 400px;
+.mockRating {
+  color: var(--voltage-yellow);
+  font-weight: 900;
 }
 
-.errorImage {
-  width: 100%;
-  top: 150px;
-  left: 400px;
+.mockMeta {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.error {
+  color: var(--neon-pink);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-top: 5px;
 }
 
 .successMessage {
-  background-color: #34f12e;
-  color: white;
-  position: absolute;
-  width: 50%;
-  height: 40px;
-  top: 420px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-color);
+  color: #000;
+  padding: 2rem 4rem;
+  font-size: 2rem;
+  font-weight: 950;
   z-index: 9999;
-  text-align: center;
-  font-family: 'silk-screen';
-  animation: messageUp 6s;
-  -webkit-animation: messageUp 6s;
+  box-shadow: 0 0 50px var(--primary-color);
+  clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
 }
 
-@keyframes messageUp {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
   }
-  100% {
-    transform: translateY(-250px);
-    scale: 1.4;
-    -webkit-transform: translateY(-250px);
-    -moz-transform: translateY(-250px);
-    -ms-transform: translateY(-250px);
-    -o-transform: translateY(-250px);
-    opacity: 0.5;
-    z-index: -9999;
+
+  .title {
+    font-size: 3.5rem;
   }
 }

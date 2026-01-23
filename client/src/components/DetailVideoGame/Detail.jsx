@@ -27,46 +27,58 @@ const Detail = () => {
     return (
       <div className={style.loadingContainer}>
         <img src={imgLoading} alt='loading...' className={style.imgLoading} />
+        <div className={style.loadingText}>Synchronizing_Tactical_Data...</div>
       </div>
     );
   }
 
   if (!gameDetail || Object.keys(gameDetail).length === 0) {
     return (
-      <div className={style.errorMessage}>Detalle de juego no encontrado</div>
+      <div className={style.errorMessage}>[ ERROR ] LINK_NOT_FOUND: Subject data missing.</div>
     );
   }
 
   return (
     <div className={style.container}>
-      <div className={style.detailContainer} key={id}>
-        <img
-          className={style.detailImg}
-          src={gameDetail.image}
-          alt='detailImg'
-        />
-        <div className={style.infoColumn}>
-          <h1 className={style.name}>{gameDetail.name}</h1>
+      <div className={style.detailCard}>
+        <div className={style.imageSection}>
+          <img
+            className={style.detailImg}
+            src={gameDetail.image}
+            alt={gameDetail.name}
+          />
+          <div className={style.overlay}></div>
+        </div>
 
-          <div className={style.descriptFinal}>
-            <p className={style.platforms}>
-              <span>Platforms: </span>{gameDetail.platforms}
-            </p>
-            <p className={style.date}>
-              <span>Released: </span>{gameDetail.released}
-            </p>
-            <p className={style.rating}>
-              <span>Rating: </span>{gameDetail.rating}
-            </p>
-            <p className={style.genres}>
-              <span>Genres: </span>{gameDetail.genres?.map((genre) => genre.name).join(', ')}
-            </p>
+        <div className={style.infoSection}>
+          <div className={style.header}>
+            <span className={style.idTag}>INTEL_ID_#{id}</span>
+            <h1 className={style.name}>{gameDetail.name}</h1>
           </div>
 
-          <div
-            className={style.description}
-            dangerouslySetInnerHTML={{ __html: gameDetail.description }}
-          />
+          <div className={style.metaGrid}>
+            <div className={style.metaItem}>
+              <h4>Initial Deployment</h4>
+              <p>{gameDetail.released || 'CLASSIFIED'}</p>
+            </div>
+            <div className={style.metaItem}>
+              <h4>Power Rating</h4>
+              <p>{gameDetail.rating || '0.0'} ★</p>
+            </div>
+            <div className={style.metaItem}>
+              <h4>Target Platforms</h4>
+              <p>{gameDetail.platforms || 'GENERAL_HARDWARE'}</p>
+            </div>
+            <div className={style.metaItem}>
+              <h4>Mission Genres</h4>
+              <p>{gameDetail.genres?.map((g) => g.name || g).join(', ') || 'UNCATEGORIZED'}</p>
+            </div>
+          </div>
+
+          <div className={style.description}>
+            <h3>Tactical Chronicles</h3>
+            <div dangerouslySetInnerHTML={{ __html: gameDetail.description }} />
+          </div>
         </div>
       </div>
     </div>

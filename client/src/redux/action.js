@@ -32,15 +32,8 @@ export const getAllGames = () => async (dispatch) => {
     dispatch(setLoading(true));
     const response = await axios.get('/videogames');
     const videoGames = response.data;
-    console.log("Juegos recibidos en el cliente:", videoGames); // DEBUG LOG
 
     dispatch({ type: GET_ALL_GAMES, payload: videoGames });
-    dispatch({
-      type: SET_TOTAL_PAGES,
-      payload: Math.ceil(videoGames.length / PAGE_SIZE),
-    });
-    dispatch(setItems(videoGames.slice(0, PAGE_SIZE)));
-    dispatch({ type: SET_CURRENT_PAGE, payload: 1 });
   } catch (error) {
     console.error('Error fetching video games from backend:', error);
   } finally {
@@ -127,7 +120,7 @@ export const clearDetail = () => {
 export const postVideoGame = (gameData) => async (dispatch) => {
   try {
     const response = await axios.post(
-      '/create',
+      '/videogames/create',
       gameData
     );
 

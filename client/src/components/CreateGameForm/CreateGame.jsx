@@ -5,8 +5,8 @@ import validation from './validation';
 import style from './createGame.module.css';
 import { useHistory } from 'react-router-dom';
 
-const platformsOptions = ['PC', 'PlayStation', 'Xbox', 'Nintendo', 'Mobile'];
-const genresOptions = ['Action', 'Adventure', 'RPG', 'Simulation', 'Strategy'];
+const platformsOptions = ['PC', 'PlayStation 5', 'PlayStation 4', 'Xbox Series X/S', 'Xbox One', 'Nintendo Switch', 'iOS', 'Android'];
+const genresOptions = ['Action', 'Indie', 'Adventure', 'RPG', 'Strategy', 'Shooter', 'Casual', 'Simulation', 'Puzzle', 'Arcade', 'Platformer', 'Racing', 'Massively Multiplayer', 'Sports', 'Fighting'];
 
 const CreateGame = () => {
   const dispatch = useDispatch();
@@ -27,27 +27,21 @@ const CreateGame = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleChange = (e) => {
-    const { name, options } = e.target;
+    const { name, value } = e.target;
+    const newFormData = { ...formData, [name]: value };
+    setFormData(newFormData);
+    setErrors(validation(newFormData));
+  };
 
-    if (name === 'platforms' || name === 'genres') {
-      const selectedValues = Array.from(options)
-        .filter((option) => option.selected)
-        .map((option) => option.value);
+  const handleToggleChip = (name, value) => {
+    const currentValues = formData[name];
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((v) => v !== value)
+      : [...currentValues, value];
 
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: selectedValues,
-      }));
-
-      setErrors(validation({ ...formData, [name]: selectedValues }));
-    } else {
-      setFormData({
-        ...formData,
-        [name]: e.target.value,
-      });
-
-      setErrors(validation({ ...formData, [name]: e.target.value }));
-    }
+    const newFormData = { ...formData, [name]: newValues };
+    setFormData(newFormData);
+    setErrors(validation(newFormData));
   };
 
   useEffect(() => {
@@ -63,17 +57,16 @@ const CreateGame = () => {
     if (!isSubmitDisabled) {
       dispatch(postVideoGame(formData))
         .then(() => {
-          setFormData(initialFormData); // Reset form data
-          setErrors({}); // Clear errors
-          setSuccessMessage('Videojuego creado correctamente'); // Seteamos el mensaje de éxito
+          setFormData(initialFormData);
+          setErrors({});
+          setSuccessMessage('QUEST COMPLETED: Game Created');
           setTimeout(() => {
-            setSuccessMessage(''); // limpiamos el mensaje antes del redireccionamiento
-            history.push('/home'); // Redirecionamiento a /home
-            window.location.reload();
-          }, 5000); // mostramos por 8 segundos
+            setSuccessMessage('');
+            history.push('/home');
+          }, 3000);
         })
         .catch((error) => {
-          console.error('Error al crear el videojuego:', error);
+          console.error('[CRITICAL] Failed to create game:', error);
         });
     }
   };
@@ -83,147 +76,156 @@ const CreateGame = () => {
       {successMessage && (
         <div className={style.successMessage}>{successMessage}</div>
       )}
-      <h1 className={style.title}>Create a New Game</h1>
-      <div className={style.imgFondo}>
-        <form className={style.containForm} onSubmit={handleSubmit}>
-          <label htmlFor='name'>Name:</label>
-          <input
-            type='text'
-            name='name'
-            id='name'
-            placeholder='Name'
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          {errors.name && <p className={style.errorName}>{errors.name}</p>}
 
-          <label htmlFor='description'>Description Game:</label>
-          <textarea
-            id='description'
-            name='description'
-            placeholder='Description'
-            value={formData.description}
-            onChange={handleChange}
-            required
-            className={style.textarea}
-          />
-          {errors.description && (
-            <p className={style.errorDescription}>{errors.description}</p>
-          )}
-          <label htmlFor='image'>Image</label>
-          <input
-            id='image'
-            name='image'
-            placeholder='URL Image'
-            value={formData.image}
-            onChange={handleChange}
-            required
-            className={style.imageInput}
-          />
-          {errors.image && <p className={style.errorImage}>{errors.image}</p>}
-
-          <label htmlFor='platforms'>Platforms:</label>
-          <select
-            name='platforms'
-            id='platforms'
-            multiple
-            value={formData.platforms}
-            onChange={handleChange}
-            required
-          >
-            {platformsOptions.map((platform) => (
-              <option key={platform} value={platform}>
-                {platform}
-              </option>
-            ))}
-          </select>
-          {errors.platforms && (
-            <p className={style.errorPlatforms}>{errors.platforms}</p>
-          )}
-
-          <label htmlFor='genres'>Genres:</label>
-          <select
-            name='genres'
-            id='genres'
-            multiple
-            value={formData.genres}
-            onChange={handleChange}
-            required
-          >
-            {genresOptions.map((genre) => (
-              <option key={genre} value={genre}>
-                {genre}
-              </option>
-            ))}
-          </select>
-          {errors.genres && (
-            <p className={style.errorGenres}>{errors.genres}</p>
-          )}
-
-          <label htmlFor='released'>Released Date:</label>
-          <input
-            type='date'
-            name='released'
-            id='released'
-            value={formData.released}
-            onChange={handleChange}
-            required
-          />
-          {errors.released && (
-            <p className={style.errorReleased}>{errors.released}</p>
-          )}
-
-          <label htmlFor='rating'>Rating:</label>
-          <input
-            type='number'
-            name='rating'
-            id='rating'
-            placeholder='Rating'
-            value={formData.rating}
-            onChange={handleChange}
-            required
-          />
-          {errors.rating && (
-            <p className={style.errorRating}>{errors.rating}</p>
-          )}
-
-          <button
-            type='submit'
-            className={style.bottonCreate}
-            disabled={isSubmitDisabled}
-          >
-            Create Game
-          </button>
-        </form>
+      <div className={style.pageHeader}>
+        <h1 className={style.title}>Forge Legend</h1>
+        <div className={style.subtitle}>[ SESSION_SECURE ] initializing_game_creation_sequence...</div>
       </div>
-      <div
-        className={`${style.selectedOptions} ${
-          formData.platforms.length > 0 || formData.genres.length > 0
-            ? style.visible
-            : ''
-        }`}
-      >
-        {formData.platforms.length > 0 && (
-          <div>
-            <h2>Selected Platforms:</h2>
-            <ul>
-              {formData.platforms.map((platform) => (
-                <li key={platform}>{platform}</li>
-              ))}
-            </ul>
+
+      <div className={style.mainGrid}>
+        {/* Form Section */}
+        <div className={style.formCard}>
+          <form className={style.containForm} onSubmit={handleSubmit}>
+            <div className={style.inputGroup}>
+              <label>Game ID \ Name</label>
+              <input
+                type='text'
+                name='name'
+                id='name'
+                placeholder='ASSIGN IDENTITY...'
+                value={formData.name}
+                onChange={handleChange}
+                autoComplete="off"
+              />
+              {errors.name && <span className={style.error}>{errors.name}</span>}
+            </div>
+
+            <div className={style.inputGroup}>
+              <label>Visual Asset \ URL</label>
+              <input
+                id='image'
+                name='image'
+                placeholder='HTTP://EXTERNAL_LINK...'
+                value={formData.image}
+                onChange={handleChange}
+              />
+              {errors.image && <span className={style.error}>{errors.image}</span>}
+            </div>
+
+            <div className={style.gridGroup}>
+              <div className={style.inputGroup}>
+                <label>Launch Date</label>
+                <input
+                  type='date'
+                  name='released'
+                  id='released'
+                  value={formData.released}
+                  onChange={handleChange}
+                />
+                {errors.released && <span className={style.error}>{errors.released}</span>}
+              </div>
+
+              <div className={style.inputGroup}>
+                <label>Power Level \ Rating</label>
+                <input
+                  type='number'
+                  name='rating'
+                  id='rating'
+                  step='0.1'
+                  min='1'
+                  max='5'
+                  placeholder='5.0'
+                  value={formData.rating}
+                  onChange={handleChange}
+                />
+                {errors.rating && <span className={style.error}>{errors.rating}</span>}
+              </div>
+            </div>
+
+            <div className={style.inputGroup}>
+              <label>Compatible Platforms</label>
+              <div className={style.chipsContainer}>
+                {platformsOptions.map((platform) => (
+                  <button
+                    key={platform}
+                    type="button"
+                    className={`${style.chip} ${formData.platforms.includes(platform) ? style.activeChip : ''}`}
+                    onClick={() => handleToggleChip('platforms', platform)}
+                  >
+                    {platform}
+                  </button>
+                ))}
+              </div>
+              {errors.platforms && <span className={style.error}>{errors.platforms}</span>}
+            </div>
+
+            <div className={style.inputGroup}>
+              <label>Category Tags \ Genres</label>
+              <div className={style.chipsContainer}>
+                {genresOptions.map((genre) => (
+                  <button
+                    key={genre}
+                    type="button"
+                    className={`${style.chip} ${formData.genres.includes(genre) ? style.activeChip : ''}`}
+                    onClick={() => handleToggleChip('genres', genre)}
+                  >
+                    {genre}
+                  </button>
+                ))}
+              </div>
+              {errors.genres && <span className={style.error}>{errors.genres}</span>}
+            </div>
+
+            <div className={style.inputGroup}>
+              <label>Game Chronicles \ Description</label>
+              <textarea
+                id='description'
+                name='description'
+                placeholder='INITIALIZE LORE...'
+                value={formData.description}
+                onChange={handleChange}
+                className={style.textarea}
+              />
+              {errors.description && <span className={style.error}>{errors.description}</span>}
+            </div>
+
+            <button
+              type='submit'
+              className={style.bottonCreate}
+              disabled={isSubmitDisabled}
+            >
+              EXECUTE_CREATE.EXE
+            </button>
+          </form>
+        </div>
+
+        {/* Preview Section */}
+        <div className={style.previewCard}>
+          <div className={style.previewTitle}>Quest Preview</div>
+          <div className={style.mockCard}>
+            <div className={style.mockImage}>
+              {formData.image ? (
+                <img src={formData.image} alt="preview" />
+              ) : (
+                <div className={style.imagePlaceholder}>
+                  <span>[ NO DATA ]</span>
+                </div>
+              )}
+            </div>
+            <div className={style.mockInfo}>
+              <div className={style.mockHeader}>
+                <h2 className={style.mockName}>{formData.name || 'NEW_GAME'}</h2>
+                <span className={style.mockRating}>{formData.rating || '0.0'} ★</span>
+              </div>
+              <p className={style.mockMeta}>
+                RELEASE: {formData.released || 'NONE'} | GENRE: {formData.genres[0] || 'TBD'}
+              </p>
+              <p className={style.mockDescription}>
+                {formData.description || 'System awaiting data input... Initialize description sequence.'}
+              </p>
+            </div>
           </div>
-        )}
-        {formData.genres.length > 0 && (
-          <div>
-            <h2>Selected Genres:</h2>
-            <ul>
-              {formData.genres.map((genre) => (
-                <li key={genre}>{genre}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
